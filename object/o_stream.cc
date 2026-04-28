@@ -18,4 +18,28 @@
 
 #include "object/o_stream.h"
 
-/* Add your code here */ 
+O_Stream& dec(O_Stream& os) {
+    os.setBase(10);
+    return os;
+}
+
+O_Stream& hex(O_Stream& os) {
+    os.setBase(16);
+    return os;
+}
+
+O_Stream& oct(O_Stream& os) {
+    os.setBase(8);
+    return os;
+}
+
+O_Stream& bin(O_Stream& os) {
+    os.setBase(2);
+    return os;
+}
+
+O_Stream& endl(O_Stream& os) {
+    os.put('\n');
+    os.flush();
+    return os;
+}
