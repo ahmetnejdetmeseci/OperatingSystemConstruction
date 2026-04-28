@@ -1,16 +1,19 @@
-/*****************************************************************************/
-/* Operating-System Construction                                             */
-/*---------------------------------------------------------------------------*/
-/*                                                                           */
-/*                         C G A _ S T R E A M                               */
-/*                                                                           */
-/*---------------------------------------------------------------------------*/
-/* The CGA_Stream class allows to print different data types as text strings */
-/* to a PC's CGA screen.                                                     */
-/* For attributes/colors and cursor positioning use the methods of class     */
-/* CGA_Screen.                                                               */
-/*****************************************************************************/
-
 #include "device/cgastr.h"
 
-/* Add your code here */ 
+void CGA_Stream::flush() {
+    for (int i = 0; i < pos; i++) {
+        screen.putchar(buffer[i]);
+    }
+    pos = 0;
+}
+
+void CGA_Stream::clear() {
+    screen.clear();
+}
+
+void CGA_Screen::clear() {
+    for (int i = 0; i < 80 * 25; i++)
+        video[i] = (0x07 << 8) | ' ';
+    x = 0;
+    y = 0;
+}

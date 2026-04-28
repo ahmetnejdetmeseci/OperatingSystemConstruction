@@ -231,14 +231,20 @@ Keyboard_Controller::Keyboard_Controller() : ctrl_port(0x64), data_port(0x60)
 //          Otherwise, key_hit () returns an invalid value, which can be
 //          checked by calling Key::valid ().
 
-Key Keyboard_Controller::key_hit()
-{
-	Key invalid; // not explicitly initialized Key objects are invalid
-/* Add your code here */ 
-/* Add your code here */ 
- 
-/* Add your code here */ 
-	return invalid;
+Key Keyboard_Controller::key_hit() {
+    Key invalid;
+
+    unsigned char status = ctrl_port.inb();
+
+    if (!(status & outb))
+        return invalid;
+
+    code = data_port.inb();
+
+    if (key_decoded())
+        return gather;
+
+    return invalid;
 }
 
 // REBOOT: Reboots the PC. Yes, in a PC the keyboard controller is
@@ -270,20 +276,42 @@ void Keyboard_Controller::reboot()
 //                  Allowed values are between 0 (very fast) and 31 (very
 //                  slow).
 
-void Keyboard_Controller::set_repeat_rate(int speed, int delay)
-{
-/* Add your code here */ 
- 
-/* Add your code here */ 
- 
+void Keyboard_Controller::set_repeat_rate(int speed, int delay) {
+    while (ctrl_port.inb() & inpb);
+
+    data_port.outb(kbd_cmd::set_speed);
+
+    while (!(ctrl_port.inb() & outb));
+    data_port.inb(); // ACK
+
+    while (ctrl_port.inb() & inpb);
+
+    unsigned char value = (delay << 5) | speed;
+    data_port.outb(value);
+
+    while (!(ctrl_port.inb() & outb));
+    data_port.inb(); // ACK
 }
 
 // SET_LED: sets or clears the specified LED
 
-void Keyboard_Controller::set_led(char led, bool on)
-{
-/* Add your code here */ 
- 
-/* Add your code here */ 
- 
+void Keyboard_Controller::set_led(char led, bool on) {
+    while (ctrl_port.inb() & inpb);
+
+    data_port.outb(kbd_cmd::set_led);
+
+    while (!(ctrl_port.inb() & outb));
+    data_port.inb(); // ACK
+
+    while (ctrl_port.inb() & inpb);
+
+    if (on)
+        leds |= led;
+    else
+        leds &= ~led;
+
+    data_port.outb(leds);
+
+    while (!(ctrl_port.inb() & outb));
+    data_port.inb(); // ACK
 }

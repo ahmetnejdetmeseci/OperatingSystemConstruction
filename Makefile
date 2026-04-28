@@ -52,8 +52,8 @@ DRIVE_HD = /dev/sdz
 DELETE = rm
 ASM = nasm
 QEMU ?= qemu-system-x86_64
-CC ?= gcc
-CXX ?= g++
+CC = x86_64-linux-gnu-gcc
+CXX = x86_64-linux-gnu-g++
 CFLAGS := $(CFLAGS) -m64 -mno-red-zone -Wall -Wno-write-strings -fno-stack-protector -nostdlib -mno-sse -I. -g #-DDEBUG
 CXXFLAGS := $(CFLAGS) -Wno-non-virtual-dtor -fno-threadsafe-statics -fno-use-cxa-atexit -fno-rtti -fno-exceptions
 

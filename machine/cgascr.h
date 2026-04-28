@@ -1,34 +1,16 @@
-#ifndef __screen_include__
-#define __screen_include__
-
-/*****************************************************************************/
-/* Operating-System Construction                                             */
-/*---------------------------------------------------------------------------*/
-/*                                                                           */
-/*                             C G A _ S C R E E N                           */
-/*                                                                           */
-/*---------------------------------------------------------------------------*/
-/* This class allows accessing the PC's screen.  Accesses work directly on   */
-/* the hardware level, i.e. via the video memory and the graphic adapter's   */
-/* I/O ports.                                                                */
-/*****************************************************************************/
-
-#include "machine/io_port.h"
+#ifndef screen_include
+#define screen_include
 
 class CGA_Screen {
 private:
-/* Add your code here */ 
+    unsigned short *video;
+    int x, y;
 
 public:
-	CGA_Screen(const CGA_Screen &copy) = delete; // prevent copying
-	CGA_Screen& operator=(const CGA_Screen&) = delete; // prevent assignment
-	CGA_Screen()
-/* Add your code here */ 
-{}
+    CGA_Screen() : video((unsigned short*)0xb8000), x(0), y(0) {}
 
-/* Add your code here */ 
+    void putchar(char c);
+    void clear();
 };
-
-/* Add your code here */ 
 
 #endif
